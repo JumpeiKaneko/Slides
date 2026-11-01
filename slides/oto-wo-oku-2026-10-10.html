@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音を置く（仮）</title>
+<meta name="description" content="共有空間の音環境を、居る人が自分でデザインする。企画スライド（2026.10.10版）。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700&family=Zen+Old+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/slide.css">
+<style>
+/* 「音を置く（仮）」専用レイアウト。図は細い線と漢字だけ。大きさは画面に比例し、見出しの位置・余白は全ページ共通 */
+.dk{ --u:clamp(13px,min(1.25vw,2.2vh),28px); --dg:#566078; --dl:#8089a6; font-size:var(--u); }
+.dk .slide{ justify-content:flex-start; padding:5em 6.5vw 2.6em; }
+.dk .slide--cover{ justify-content:center; padding:5em 6.5vw; }
+.dk .slide-inner{ flex:1; display:flex; flex-direction:column; max-width:70em; }
+.dk .slide--cover .slide-inner{ flex:none; }
+.dk .eyebrow{ font-size:.72em; color:var(--dg); }
+.dk .s-title{ font-weight:400; font-size:1.5em; margin-top:.5em; }
+.dk .s-title--name{ font-size:var(--fs-xxl); margin-top:.3em; }
+.dk .s-meta{ color:var(--dg); }
+.d-body{ margin-top:2.2em; }
+.d-body.is-l{ font-size:1.12em; }
+.j{ word-break:keep-all; overflow-wrap:anywhere; line-break:strict; }
+.d-lead,.d-list p,.d-text,.d-note{ text-wrap:pretty; }
+.d-lead{ margin:0; font-family:var(--font-display); font-weight:400; font-size:1.9em; line-height:1.65; letter-spacing:.04em; color:var(--c-fg); text-wrap:balance; }
+.d-lead--m{ font-size:1.45em; line-height:1.7; }
+.d-lead--n{ font-size:1.32em; line-height:1.75; }
+.d-lead--3 span{ display:block; }
+.d-lead--3 span + span{ margin-top:.55em; }
+.d-lead--s{ font-size:1.3em; line-height:1.8; }
+.d-k{ margin:0 0 .9em; font-family:var(--font-en); font-size:.74em; letter-spacing:.18em; color:var(--dg); line-height:1.6; }
+.d-k--gap{ margin-top:2.2em; }
+.d-k + .d-lead{ margin-top:0; }
+.d-lead + .d-list{ margin-top:1.6em; }
+.d-lead--m + .d-list{ margin-top:1.2em; }
+.d-note{ margin:1.2em 0 0; font-size:.84em; line-height:1.85; color:var(--dg); }
+.d-note--gap{ margin-top:1em; }
+.d-text{ margin:0; font-size:1.02em; line-height:1.95; color:var(--c-fg); }
+.d-2{ display:grid; grid-template-columns:minmax(0,5.2fr) minmax(0,6fr); column-gap:4.6em; align-items:start; }
+.d-fig svg{ display:block; width:100%; height:auto; }
+.d-fig--wide{ margin-top:2.6em; }
+.d-fig--gap{ margin-top:1.8em; }
+.d-fig svg text{ font-family:var(--font-display); font-weight:400; fill:#14141a; letter-spacing:.06em; }
+.d-fig svg text.g{ fill:#566078; }
+.d-defs{ margin-top:2em; display:grid; gap:.5em; }
+.d-defs p{ margin:0; font-size:.9em; line-height:1.8; color:var(--dg); display:grid; grid-template-columns:5.2em minmax(0,1fr); }
+.d-defs b{ font-weight:400; font-family:var(--font-en); letter-spacing:.14em; font-size:.92em; color:var(--c-fg); }
+.d-list{ list-style:none; margin:0; padding:0; }
+.d-list li{ display:grid; grid-template-columns:2.6em minmax(0,1fr); padding:.72em 0; border-top:1px solid var(--c-line); align-items:baseline; }
+.d-list li:first-child{ border-top-color:var(--c-line-strong); }
+.d-list li > span{ font-family:var(--font-en); font-size:.74em; letter-spacing:.12em; color:var(--dg); }
+.d-list p{ margin:0; font-size:1.06em; line-height:1.75; color:var(--c-fg); }
+.d-list small{ display:block; margin-top:.2em; font-size:.82em; line-height:1.75; color:var(--dg); text-wrap:pretty; }
+.d-list--l li{ padding:1.15em 0; grid-template-columns:3.4em minmax(0,1fr); }
+.d-list--l p{ font-size:1.22em; }
+/* 先行実践：比較表 */
+.d-cmp{ margin-top:2.2em; max-width:62em; }
+.d-cmp__h,.d-cmp__r{ display:grid; grid-template-columns:13em minmax(0,1fr) minmax(0,1fr); column-gap:2em; }
+.d-cmp__h{ padding-bottom:.7em; font-family:var(--font-en); letter-spacing:.18em; color:var(--dg); border-bottom:1px solid var(--c-line-strong); }
+.d-cmp__h span{ font-size:.74em; }
+.d-cmp__r{ padding:1.15em 0; border-bottom:1px solid var(--c-line); align-items:baseline; font-size:1.02em; line-height:1.8; }
+.d-cmp__n{ font-family:var(--font-display); font-size:1.12em; letter-spacing:.04em; line-height:1.5; }
+.d-cmp__r--me{ border-bottom:none; }
+.d-cmp__r--me > span{ color:var(--c-fg); }
+.d-cmp__r--me .d-cmp__n::before{ content:""; display:block; width:2.4em; height:1px; background:var(--c-line-strong); margin-bottom:.6em; }
+/* 先行実践：写真つき */
+.d-ex{ display:flex; flex-direction:column; gap:1.3em; }
+.d-ex__c{ display:grid; grid-template-columns:16em minmax(0,1fr); column-gap:2.4em; align-items:start; }
+.d-ex__c + .d-ex__c{ border-top:1px solid var(--c-line); padding-top:1.3em; }
+.d-photo{ position:relative; aspect-ratio:3/2; border:1px solid var(--dl); background:rgba(255,255,255,.35); overflow:hidden; }
+.d-photo img{ width:100%; height:100%; object-fit:contain; display:block; }
+.d-photo.is-missing img{ display:none; }
+.d-photo.is-missing::after{ content:"写真（準備中）"; position:absolute; inset:0; display:grid; place-items:center; font-size:.85em; letter-spacing:.2em; color:var(--dg); }
+.d-credit{ margin:.9em 0 0; font-size:.64em; line-height:1.7; color:var(--dg); letter-spacing:.04em; }
+.d-ex__t{ margin:0; font-family:var(--font-display); font-weight:400; font-size:1.35em; letter-spacing:.04em; line-height:1.4; }
+.d-ex__m{ margin:.2em 0 .7em; font-size:.8em; color:var(--dg); letter-spacing:.06em; }
+.d-ex__row{ display:grid; grid-template-columns:3.4em minmax(0,1fr); padding:.5em 0; border-top:1px solid var(--c-line); align-items:baseline; }
+.d-ex__row:first-of-type{ border-top-color:var(--c-line-strong); }
+.d-ex__row span{ font-family:var(--font-en); font-size:.72em; letter-spacing:.14em; color:var(--dg); }
+.d-ex__row p{ margin:0; font-size:.88em; line-height:1.8; color:var(--c-fg); text-wrap:pretty; }
+/* 先行事例比較：上に横いっぱいの文、下に2列 */
+.d-span{ margin:0 0 1.5em; padding-bottom:1em; border-bottom:1px solid var(--c-line-strong); }
+.d-span p{ margin:0; font-family:var(--font-display); font-weight:400; font-size:1.45em; line-height:1.7; letter-spacing:.04em; }
+.d-span__a{ color:var(--dg); }
+.d-span__b{ color:var(--c-fg); margin-top:.15em !important; }
+.d-2--cmp{ grid-template-columns:minmax(0,6.2fr) minmax(0,4.4fr); column-gap:3em; }
+.d-me{ border-left:1px solid var(--c-line); padding-left:3em; }
+.d-credits{ margin:1.2em 0 0; font-size:.6em; line-height:1.8; color:var(--dg); letter-spacing:.04em; }
+/* 新規性：写真つきの先行実践 */
+.d-mini{ display:grid; grid-template-columns:9.6em minmax(0,1fr); column-gap:1.4em; align-items:start; padding:.8em 0; border-top:1px solid var(--c-line); }
+.d-k + .d-mini{ border-top-color:var(--c-line-strong); }
+.d-mini .d-photo{ aspect-ratio:3/2; }
+.d-mini h3{ margin:0; font-family:var(--font-display); font-weight:400; font-size:1.2em; letter-spacing:.04em; line-height:1.4; }
+.d-mini__m{ margin:.15em 0 .55em; font-size:.76em; color:var(--dg); letter-spacing:.05em; line-height:1.6; }
+.d-mini__t{ margin:0; font-size:.88em; line-height:1.8; color:var(--c-fg); text-wrap:pretty; }
+.d-mini .d-credit{ margin:.6em 0 0; font-size:.6em; }
+/* 枠組み */
+.d-frame{ display:flex; align-items:stretch; gap:1.6em; margin-top:2.6em; max-width:62em; }
+.d-frame__core{ flex:0 0 15em; border:1px solid var(--dl); padding:2.2em 1.8em; display:flex; flex-direction:column; justify-content:center; }
+.d-frame__core-t{ font-family:var(--font-display); font-size:1.7em; letter-spacing:.1em; }
+.d-frame__core-s{ margin-top:.6em; font-size:.74em; letter-spacing:.14em; color:var(--dg); }
+.d-frame__arr{ flex:0 0 3em; display:flex; align-items:center; }
+.d-frame__arr svg{ width:100%; height:auto; overflow:visible; }
+.d-frame__arr line,.d-frame__arr polyline{ fill:none; stroke:var(--dg); stroke-width:1; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+.d-frame__nodes{ flex:1; display:flex; flex-direction:column; justify-content:center; gap:2em; }
+.d-frame__node{ border-left:1px solid var(--dl); padding:.2em 0 .2em 1.5em; }
+.d-frame__t{ font-family:var(--font-display); font-size:1.4em; letter-spacing:.06em; }
+.d-frame__node p{ margin:.5em 0 0; font-size:1.06em; line-height:1.85; color:var(--c-fg-soft); }
+@media (max-width:900px){ .d-mini{ grid-template-columns:1fr; row-gap:.8em; } .d-2,.d-ex__c{ grid-template-columns:1fr; row-gap:2em; } .d-frame{ flex-direction:column; } .d-frame__arr{ display:none; } .d-cmp__h{ display:none; } .d-cmp__r{ grid-template-columns:1fr; row-gap:.3em; } }
+</style>
+</head>
+<body>
+
+<div class="site-echo"><span>/ 音を置く（仮）</span></div>
+<button class="fs-toggle" id="fsToggle" type="button">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+  <span id="fsLabel">全画面</span>
+</button>
+
+<main id="deck" class="dk">
+
+<section class="slide slide--cover" data-title="音を置く（仮）">
+  <div class="slide-inner reveal">
+<div class="eyebrow">企画</div><div class="s-title s-title--name">音を置く（仮）</div><p class="s-meta">共有空間の音環境を、居る人が自分でデザインする</p>
+  </div>
+</section>
+
+<section class="slide is-l" data-title="何をやるのか">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">01 — 何をやるのか</div>
+    <div class="s-title" data-scramble>何をやるのか</div>
+    <div class="d-body j">
+<p class="d-lead ">共有空間で、<wbr>1つの<wbr>音楽が<wbr>流れ続ける。<br>その<wbr>音楽を、<wbr>居る<wbr>人が<wbr>分けて、<wbr>置いて、<wbr>変える。</p><div class="d-fig d-fig--wide"><svg viewBox="0 0 900 170" role="img" aria-label="音楽、分ける、置く、変える"><rect x="40" y="30" width="84" height="84" fill="none" stroke="#838ca8" stroke-width="1"/><text x="82" y="86" font-size="36" text-anchor="middle">音</text><text x="82" y="152" font-size="18" text-anchor="middle" class="g">1つの音楽が流れる</text><line x1="142" y1="72" x2="262" y2="72" stroke="#5c6479" stroke-width="1"/><polyline points="255.0,75.8 262,72 255.0,68.2" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><rect x="280" y="30" width="84" height="84" fill="none" stroke="#838ca8" stroke-width="1"/><text x="322" y="86" font-size="36" text-anchor="middle">分</text><text x="322" y="152" font-size="18" text-anchor="middle" class="g">ブロックに分ける</text><line x1="382" y1="72" x2="502" y2="72" stroke="#5c6479" stroke-width="1"/><polyline points="495.0,75.8 502,72 495.0,68.2" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><rect x="520" y="30" width="84" height="84" fill="none" stroke="#838ca8" stroke-width="1"/><text x="562" y="86" font-size="36" text-anchor="middle">置</text><text x="562" y="152" font-size="18" text-anchor="middle" class="g">好きな場所に置く</text><line x1="622" y1="72" x2="742" y2="72" stroke="#5c6479" stroke-width="1"/><polyline points="735.0,75.8 742,72 735.0,68.2" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><rect x="760" y="30" width="84" height="84" fill="none" stroke="#838ca8" stroke-width="1"/><text x="802" y="86" font-size="36" text-anchor="middle">変</text><text x="802" y="152" font-size="18" text-anchor="middle" class="g">音色を変える</text></svg></div><div class="d-defs"><p><b>ブロック</b>同じ形の<wbr>小さな<wbr>スピーカー。<wbr>1つの<wbr>音楽を<wbr>分けて<wbr>鳴らす。</p><p><b>音色</b>音の<wbr>質感。<wbr>同じ<wbr>音楽の<wbr>まま、<wbr>質感を<wbr>変えられる。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide is-l" data-title="なぜやるのか">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">02 — なぜやるのか</div>
+    <div class="s-title" data-scramble>なぜやるのか</div>
+    <div class="d-body j">
+<p class="d-lead ">共有空間の<wbr>音環境は、<wbr>減らす・防ぐ・ルールで<wbr>決める<wbr>対象に<wbr>なってしまう。</p><ol class="d-list d-list--l"><li><span>01</span><div><p>イヤホンで<wbr>耳を<wbr>塞げば、<wbr>その<wbr>場の<wbr>音から<wbr>遮られるが、<wbr>コミュニケーションが<wbr>閉じてしまう。</p></div></li><li><span>02</span><div><p>同じ<wbr>空間に<wbr>居る<wbr>人は、<wbr>生活時間も<wbr>好む音も<wbr>違う。</p></div></li><li><span>03</span><div><p>居る<wbr>人が<wbr>自分の<wbr>音環境を<wbr>デザインできる<wbr>手段を<wbr>つくる。</p></div></li></ol>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="構造と方向性">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">03 — 構造と方向性</div>
+    <div class="s-title" data-scramble>構造と方向性</div>
+    <div class="d-body j">
+<div class="d-2"><div><div class="d-k">構造</div><div class="d-fig "><svg viewBox="0 0 440 372" role="img" aria-label="完成した1つの音楽を分けて、枠の中に並べ、好きな場所に置く"><rect x="20" y="12" width="400" height="48" fill="none" stroke="#838ca8" stroke-width="1"/><text x="220" y="44" font-size="19" text-anchor="middle">完成した1つの音楽</text><line x1="220" y1="66" x2="220" y2="122" stroke="#5c6479" stroke-width="1"/><polyline points="216.2,115.0 220,122 223.8,115.0" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><text x="238" y="100" font-size="17" text-anchor="start" class="g">分ける</text><rect x="8" y="130" width="424" height="86" fill="none" stroke="#838ca8" stroke-width="1" stroke-dasharray="4 4"/><rect x="22" y="151" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="44.0" cy="178.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="44.0" cy="178.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="44.0" cy="159.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="90" y="151" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="112.0" cy="178.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="112.0" cy="178.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="112.0" cy="159.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="158" y="151" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="180.0" cy="178.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="180.0" cy="178.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="180.0" cy="159.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="226" y="151" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="248.0" cy="178.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="248.0" cy="178.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="248.0" cy="159.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="294" y="151" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="316.0" cy="178.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="316.0" cy="178.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="316.0" cy="159.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="362" y="151" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="384.0" cy="178.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="384.0" cy="178.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="384.0" cy="159.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><text x="432" y="244" font-size="17" text-anchor="end" class="g">枠（変えられる範囲）</text><line x1="70" y1="262" x2="70" y2="312" stroke="#5c6479" stroke-width="1"/><polyline points="66.2,305.0 70,312 73.8,305.0" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><text x="90" y="294" font-size="17" text-anchor="start" class="g">好きな場所に置く</text><rect x="48" y="318" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="70.0" cy="345.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="70.0" cy="345.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="70.0" cy="326.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/></svg></div></div><div><div class="d-k">方向性</div><p class="d-lead d-lead--m">居る<wbr>人が、<wbr>耳を<wbr>塞が<wbr>ずに<wbr>音環境を<wbr>デザインできる<wbr>体験を<wbr>つくる。</p><ol class="d-list "><li><span>01</span><div><p>作る<wbr>ことと<wbr>聞く<wbr>ことの<wbr>距離が<wbr>ゼロに<wbr>なる形で。</p><small>音を<wbr>置く<wbr>ことと、<wbr>それを<wbr>聞く<wbr>ことが、<wbr>同じ<wbr>場所で<wbr>同時に<wbr>起きる。</small></div></li><li><span>02</span><div><p>完成した<wbr>1つの<wbr>音楽を、<wbr>分けて<wbr>置く<wbr>構造に<wbr>する。</p><small>元が<wbr>完成した<wbr>音楽なので、<wbr>ブロックを<wbr>置く<wbr>ことで、<wbr>音楽に<wbr>関われる。</small></div></li></ol></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide is-l" data-title="枠組み">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">04 — 枠組み</div>
+    <div class="s-title" data-scramble>枠組み</div>
+    <div class="d-body j">
+<div class="d-frame">
+      <div class="d-frame__core"><div class="d-frame__core-t">音を置く</div><div class="d-frame__core-s">コンセプト</div></div>
+      <div class="d-frame__arr"><svg viewBox="0 0 48 14" aria-hidden="true"><line x1="0" y1="7" x2="46" y2="7"/><polyline points="39,1.5 46,7 39,12.5"/></svg></div>
+      <div class="d-frame__nodes">
+        <div class="d-frame__node"><div class="d-frame__t">① 制作</div><p>居る<wbr>人が<wbr>自分の<wbr>音環境を<wbr>デザインできる<wbr>デバイス。<br>竹中工務店で<wbr>発表する。</p></div>
+        <div class="d-frame__node"><div class="d-frame__t">② 研究</div><p>音環境を<wbr>自分で<wbr>デザインする<wbr>体験の<wbr>変容を<wbr>検証する。</p></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="竹中工務店の展示">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">05 — 制作</div>
+    <div class="s-title" data-scramble>竹中工務店の展示</div>
+    <div class="d-body j">
+<div class="d-2"><div><p class="d-lead d-lead--m">竹中工務店で、<br>この<wbr>体験を<wbr>まず<wbr>デザインする。</p><div class="d-fig d-fig--gap"><svg viewBox="0 0 540 290" role="img" aria-label="部屋の中央のブロックを、好きな場所に置く"><rect x="10" y="10" width="520" height="270" fill="none" stroke="#838ca8" stroke-width="1"/><text x="28" y="40" font-size="17" text-anchor="start" class="g">上階の1部屋</text><rect x="212" y="118" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="234.0" cy="145.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="234.0" cy="145.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="234.0" cy="126.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="262" y="118" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="284.0" cy="145.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="284.0" cy="145.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="284.0" cy="126.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="312" y="118" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="334.0" cy="145.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="334.0" cy="145.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="334.0" cy="126.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="212" y="168" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="234.0" cy="195.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="234.0" cy="195.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="234.0" cy="176.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="262" y="168" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="284.0" cy="195.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="284.0" cy="195.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="284.0" cy="176.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="312" y="168" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="334.0" cy="195.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="334.0" cy="195.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="334.0" cy="176.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="52" y="196" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="74.0" cy="223.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="74.0" cy="223.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="74.0" cy="204.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="440" y="62" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="462.0" cy="89.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="462.0" cy="89.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="462.0" cy="70.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="440" y="196" width="44" height="44" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="462.0" cy="223.3" r="10.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="462.0" cy="223.3" r="3.5" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="462.0" cy="204.8" r="3.3" fill="none" stroke="#838ca8" stroke-width="1"/><line x1="212" y1="150" x2="98" y2="214" stroke="#838ca8" stroke-width="1" stroke-dasharray="3 4"/><line x1="306" y1="130" x2="440" y2="92" stroke="#838ca8" stroke-width="1" stroke-dasharray="3 4"/><line x1="306" y1="200" x2="440" y2="222" stroke="#838ca8" stroke-width="1" stroke-dasharray="3 4"/></svg></div><p class="d-note ">音楽は、<wbr>シンセサイザーの<wbr>音楽を<wbr>基軸に<wbr>する。</p></div><div><div class="d-k">体験の<wbr>デザイン</div><ol class="d-list "><li><span>01</span><div><p>上階に<wbr>上がると、<wbr>音楽が<wbr>聞こえてくる。</p></div></li><li><span>02</span><div><p>部屋の<wbr>中央に、<wbr>ブロックが<wbr>置かれている。</p></div></li><li><span>03</span><div><p>居る<wbr>人は、<wbr>ブロックを<wbr>好きな<wbr>場所に<wbr>置く。</p></div></li><li><span>04</span><div><p>スマホを<wbr>かざして、<wbr>音色を<wbr>変える。</p></div></li></ol><p class="d-note d-note--gap">変えられるのは、<wbr>音色。<wbr>電子音を、<wbr>環境音<wbr>（例：せせらぎ）に<wbr>入れ替える<wbr>こともできる。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="作品の視点">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">06 — 視点</div>
+    <div class="s-title" data-scramble>作品の視点</div>
+    <div class="d-body j">
+<div class="d-2"><div><div class="d-k">都市<wbr>（共生空間）と<wbr>関係性</div><p class="d-lead d-lead--m">都市<wbr>（共生空間）の<wbr>音の<wbr>在り方に<wbr>介入し、<br>その<wbr>中で<wbr>関係性が<wbr>音楽に<wbr>表出する。</p></div><div><div class="d-k">情報と<wbr>エモーション</div><p class="d-lead d-lead--m">関係性が<wbr>宿るような、<br>音楽の<wbr>仕組み。</p><p class="d-lead d-lead--m">ずっと<wbr>漂い<wbr>続ける、<br>この<wbr>時に<wbr>しか<wbr>聞けない、<br>情報の<wbr>音楽。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="デバイス">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">07 — 制作</div>
+    <div class="s-title" data-scramble>デバイス</div>
+    <div class="d-body j">
+<div class="d-2"><div><p class="d-lead d-lead--m">ブロック。<br>同じ形の<wbr>スピーカーで、<br>1つの<wbr>音楽を<wbr>鳴らす。</p><div class="d-fig d-fig--gap"><svg viewBox="0 0 460 240" role="img" aria-label="ブロックに、スマホをかざす"><rect x="40" y="40" width="120" height="120" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="100.0" cy="114.4" r="28.8" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="100.0" cy="114.4" r="9.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="100.0" cy="64.0" r="9.0" fill="none" stroke="#838ca8" stroke-width="1"/><text x="100" y="206" font-size="18" text-anchor="middle" class="g">ブロック（スピーカー）</text><rect x="330" y="30" width="70" height="130" fill="none" stroke="#838ca8" stroke-width="1"/><text x="365" y="100" font-size="18" text-anchor="middle">スマホ</text><line x1="324" y1="95" x2="170" y2="95" stroke="#5c6479" stroke-width="1"/><polyline points="177.0,91.2 170,95 177.0,98.8" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><text x="247" y="82" font-size="17" text-anchor="middle" class="g">かざす</text><text x="247" y="122" font-size="14" text-anchor="middle" class="g">NFC</text></svg></div></div><div><div class="d-k">できる<wbr>こと</div><ol class="d-list "><li><span>01</span><div><p>好きな<wbr>場所に<wbr>置ける。</p><small>置く<wbr>場所は、<wbr>居る<wbr>人が<wbr>決める。</small></div></li><li><span>02</span><div><p>NFCタグに<wbr>スマホを<wbr>かざすと、<wbr>音色を<wbr>変えられる。</p></div></li><li><span>03</span><div><p>変えられるのは、<wbr>枠の<wbr>中だけ。</p><small>音色と、<wbr>電子音から<wbr>環境音への<wbr>入れ替え。</small></div></li><li><span>04</span><div><p>変更の<wbr>履歴<wbr>（ログ）が<wbr>見られる。</p></div></li></ol></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="先行事例比較">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">08 — 先行事例比較</div>
+    <div class="s-title" data-scramble>先行事例比較</div>
+    <div class="d-body j">
+<div class="d-span"><p class="d-span__a">多数の<wbr>スピーカーで<wbr>音を<wbr>空間に<wbr>配置する<wbr>作品は、<wbr>すでに<wbr>あるが</p><p class="d-span__b">本企画は、<wbr>共有空間で、<wbr>1つの<wbr>音楽の<wbr>配置と<wbr>音色を、<wbr>居る<wbr>人が<wbr>決める<wbr>部分に<wbr>新規性と<wbr>体験の<wbr>強度が<wbr>ある</p></div><div class="d-2 d-2--cmp"><div><div class="d-k">先行実践例</div><article class="d-mini"><div class="d-photo"><img src="https://www.bunka.go.jp/j-mediaarts/tokyogarden/wp-content/uploads/2020/08/TOKYO_Garden_Catalogue_Photo_HOSOI_Miyu_Lenna_YCAM.jpg" alt="Lenna 展示風景" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('is-missing')"></div><div class="d-mini__x"><h3>Lenna</h3><p class="d-mini__m">細井美裕　2019</p><p class="d-mini__t">作者の<wbr>声を、<wbr>22.2チャンネルで<wbr>空間に<wbr>配置する。<wbr>聴く<wbr>人は、<wbr>その<wbr>音を<wbr>響かせている<wbr>空間を<wbr>聴く。</p></div></article><article class="d-mini"><div class="d-photo"><img src="https://cardiffmiller.com/wp-content/uploads/2001/04/b_Tokyo-1280x853.jpg" alt="The Forty Part Motet 展示風景" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('is-missing')"></div><div class="d-mini__x"><h3>The Forty Part Motet</h3><p class="d-mini__m">Janet Cardiff & George Bures Miller　2001</p><p class="d-mini__t">40の<wbr>声を、<wbr>40台の<wbr>スピーカーに<wbr>分けて<wbr>楕円状に<wbr>配置する。<wbr>来場者は<wbr>歩いて、<wbr>聴く<wbr>位置を<wbr>選ぶ。</p></div></article></div><div class="d-me"><div class="d-k">本企画　居る<wbr>人が<wbr>決める<wbr>こと</div><ol class="d-list "><li><span>01</span><div><p>配置</p><small>ブロックを、<wbr>好きな<wbr>場所に<wbr>置く。</small></div></li><li><span>02</span><div><p>音色</p><small>スマホを<wbr>かざして、<wbr>音色を<wbr>変える。</small></div></li></ol></div></div><p class="d-credits">写真　Lenna（YCAMでの展示）：©YCAM, Yamaguchi Center for Arts and Media / Photo: Yasuhiro Tani<br>The Forty Part Motet（フォンダシオン・エルメス、東京、2009年）：Photo by Atsushi Nakamichi / Nacása &amp; Partners Inc. Courtesy of the Fondation d'entreprise Hermès, 2009</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="オフィスへの展開">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">09 — 制作</div>
+    <div class="s-title" data-scramble>オフィスへの展開</div>
+    <div class="d-body j">
+<div class="d-2"><div><p class="d-lead d-lead--m">普段スピーカーが<wbr>ある<wbr>場所に、<br>ブロックを<wbr>重ねて<wbr>置く。</p><div class="d-fig d-fig--gap"><svg viewBox="0 0 540 250" role="img" aria-label="スピーカーの場所に重ねたブロックから、デスクの横へ置く"><rect x="34" y="50" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="72.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="72.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="57.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="74" y="50" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="72.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="72.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="57.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="114" y="50" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="72.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="72.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="57.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="34" y="90" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="112.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="112.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="97.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="74" y="90" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="112.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="112.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="97.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="114" y="90" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="112.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="112.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="97.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="34" y="130" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="152.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="152.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="52.0" cy="137.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="74" y="130" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="152.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="152.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="92.0" cy="137.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><rect x="114" y="130" width="36" height="36" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="152.3" r="8.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="152.3" r="2.9" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="132.0" cy="137.2" r="2.7" fill="none" stroke="#838ca8" stroke-width="1"/><text x="34" y="196" font-size="17" text-anchor="start" class="g">普段スピーカーがある場所</text><line x1="172" y1="100" x2="300" y2="100" stroke="#5c6479" stroke-width="1"/><polyline points="293.0,103.8 300,100 293.0,96.2" fill="none" stroke="#5c6479" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/><line x1="330" y1="140" x2="510" y2="140" stroke="#838ca8" stroke-width="1"/><line x1="346" y1="140" x2="346" y2="186" stroke="#838ca8" stroke-width="1"/><line x1="494" y1="140" x2="494" y2="186" stroke="#838ca8" stroke-width="1"/><rect x="398" y="94" width="40" height="40" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="418.0" cy="118.8" r="9.6" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="418.0" cy="118.8" r="3.2" fill="none" stroke="#838ca8" stroke-width="1"/><circle cx="418.0" cy="102.0" r="3.0" fill="none" stroke="#838ca8" stroke-width="1"/><text x="330" y="214" font-size="17" text-anchor="start" class="g">自分のデスクの横</text></svg></div></div><div><div class="d-k">オフィスでは</div><ol class="d-list "><li><span>01</span><div><p>ブロックの<wbr>数は、<wbr>その<wbr>場所の<wbr>広さで<wbr>決める。</p><small>例：9個、<wbr>十数個。</small></div></li><li><span>02</span><div><p>居る<wbr>人は、<wbr>1つか<wbr>2つを、<wbr>自分の<wbr>デスクの<wbr>横に<wbr>置ける。</p><small>自分の<wbr>席の<wbr>まわりの<wbr>音を、<wbr>自分で<wbr>決められる。</small></div></li><li><span>03</span><div><p>全体の<wbr>音楽の<wbr>方向は、<wbr>居る<wbr>人の<wbr>投票で<wbr>決める。<wbr>（構想）</p><small>好きな<wbr>曲は<wbr>人に<wbr>よって<wbr>違い、<wbr>ぶつかる。<wbr>投票の<wbr>中央値から、<wbr>音楽が<wbr>生成され続ける。</small></div></li></ol></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide " data-title="研究として">
+  <div class="slide-inner reveal">
+    <div class="eyebrow">10 — 研究</div>
+    <div class="s-title" data-scramble>研究として</div>
+    <div class="d-body j">
+<div class="d-k">テーマ</div><p class="d-lead d-lead--s">「音を<wbr>置く<wbr>デバイス」に<wbr>よって、<br>生活者が<wbr>音環境を<wbr>デザインできるようになった<wbr>とき、<br>その<wbr>体験は<wbr>どのように<wbr>変容するか。</p><div class="d-k d-k--gap">問い</div><ol class="d-list "><li><span>01</span><div><p>居る<wbr>人が、<wbr>日常の<wbr>共有空間で、<wbr>自分の<wbr>音環境を<wbr>デザインできるか。</p></div></li><li><span>02</span><div><p>作る<wbr>ことと<wbr>聞く<wbr>ことの<wbr>距離は、<wbr>ゼロに<wbr>近づくか。</p></div></li><li><span>03</span><div><p>音で、<wbr>居る<wbr>人どうしの<wbr>関係を<wbr>デザインできるか。</p></div></li><li><span>04</span><div><p>音色を<wbr>変える<wbr>行為は、<wbr>場の<wbr>音楽と、<wbr>居る<wbr>人どうしの<wbr>関係に、<wbr>どのような<wbr>変化を<wbr>及ぼすか。</p></div></li></ol>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="posi" id="posi">1 / 11</div>
+<div class="hint">↑↓ / Space / PageUp・Down</div>
+
+<script src="../assets/slide.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>絵画の世界を探す</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500&family=Zen+Old+Mincho:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#ffffff; --fg:#1f1f1f; --sub:#6b6b6b; --line:#d6d6d6; --accent:#1f1f1f; }
+  @media (prefers-color-scheme: dark){ :root{ --bg:#16181a; --fg:#ececec; --sub:#a0a4a6; --line:#35393b; --accent:#ececec; } }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:"Zen Kaku Gothic Antique","Hiragino Sans","Noto Sans JP",sans-serif;letter-spacing:.05em;overflow:hidden}
+  #stage{position:fixed;inset:0}
+  .p{position:absolute;border:0;padding:0;background:none;cursor:pointer;transition:opacity .35s,transform .35s,filter .35s;animation:drift var(--d) ease-in-out infinite alternate}
+  .p img{display:block;width:100%;height:auto}
+  @keyframes drift{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy))}}
+  .p.off{opacity:.12;filter:saturate(.4)}
+  .p.hit{z-index:3;animation-play-state:paused;transform:scale(1.12)}
+  .p:hover{z-index:4;transform:scale(1.1);animation-play-state:paused}
+  #center{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(520px,86vw);text-align:center;z-index:5}
+  #center h1{font-size:22px;font-weight:600;margin:0 0 14px}
+  #q{width:100%;font:inherit;font-size:18px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:28px;padding:14px 22px;outline:none}
+  #q:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+  .grp{margin-top:14px;color:var(--sub);font-size:13px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+  .chip{font:inherit;font-size:14px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:5px 13px;cursor:pointer}
+  .chip:hover{border-color:var(--accent)}
+  #count{margin-top:12px;font-size:13px;color:var(--sub);min-height:1.2em}
+  #panel{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.72)}
+  #panel.on{display:flex}
+  .fg{margin:0;display:flex;flex-direction:column;align-items:center}
+  .pic{position:relative;cursor:default;line-height:0}
+  .pic.snd{cursor:pointer}
+  .pic img{max-width:min(86vw,1100px);max-height:calc(100vh - 130px);width:auto;height:auto;display:block}
+  .ic{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(0,0,0,.45);align-items:center;justify-content:center}
+  .pic.snd .ic{display:flex}
+  .fg figcaption{margin-top:16px;color:#fff;font-family:"Zen Old Mincho",serif;font-size:18px;letter-spacing:.08em;min-height:1.6em}
+  .cl{position:absolute;top:16px;right:18px;border:0;background:none;cursor:pointer;padding:8px}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="center">
+  <input id="q" type="search" placeholder="今の気分や、気になる物音を入れる" autocomplete="off">
+  <div class="chips" id="c-feel"></div>
+  <div class="chips" id="c-noise" style="margin-top:8px"></div>
+  <div id="count"></div>
+</div>
+<div id="panel" role="dialog" aria-modal="true">
+  <button class="cl" id="m-close" aria-label="閉じる"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  <figure class="fg">
+    <div class="pic" id="pic"><img id="m-img" alt=""><span class="ic" id="ic"><svg id="ic-play" viewBox="0 0 24 24" width="30" height="30" fill="#fff"><path d="M8 5v14l11-7z"/></svg><svg id="ic-stop" viewBox="0 0 24 24" width="30" height="30" fill="#fff" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></span></div>
+    <figcaption id="m-name"></figcaption>
+  </figure>
+</div>
+
+<script>
+// 絵ごとの設定。画像は img/ に置き、ここに書き足せば増やせます。
+var FEELINGS=["落ち着きたい","集中したい","気分を変えたい","ほっとしたい"];
+var NOISES=["タイピング","車","話し声","空調","紙をめくる音"];
+var P=[
+ {f:"rain.jpg", name:"ギュスターヴ・カイユボット《パリの通り、雨》", scene:"雨のパリの通り。石畳が濡れ、人々が傘をさして歩いている。", world:"傘と濡れた石畳に落ちる雨の音。歩く人の足音と、遠くのざわめき。馬車の車輪と蹄の音。", feel:["落ち着きたい","集中したい"], noise:["タイピング"], sound:"sound/rain_world.mp3"},
+ {f:"p5.jpg", scene:"若葉の木々と、花の咲く草原。", world:"草原を渡る風と、木の葉の擦れる音。", feel:["気分を変えたい","ほっとしたい"], noise:["空調","紙をめくる音"]},
+ {f:"p6.jpg", scene:"雲の浮かぶ空の下の川辺。岸に人影がある。", world:"川の水音と、遠くの人の声。", feel:["落ち着きたい"], noise:["話し声"]},
+ {f:"p7.jpg", scene:"ひまわりの咲く庭の小道。", world:"庭の虫の羽音と、葉の擦れる音。", feel:["ほっとしたい"], noise:["紙をめくる音"]},
+ {f:"p8.jpg", scene:"丘の上で日傘をさす人。風で衣服が揺れている。", world:"丘を抜ける風と、草の揺れる音。", feel:["気分を変えたい"], noise:["空調"]},
+ {f:"p9.jpg", scene:"川に小舟が浮かび、向こうに橋と街が見える。", world:"水面の揺れる音と、遠い街のざわめき。", feel:["集中したい"], noise:["車"]},
+ {f:"p10.jpg", scene:"朝焼けの港。小舟が水面に浮かぶ。", world:"港の波の音と、船のきしむ音。", feel:["落ち着きたい"], noise:["車"]},
+ {f:"p11.jpg", scene:"帆船の並ぶ川と、橋。", world:"川の水音と、帆や綱の揺れる音。", feel:["集中したい"], noise:["車"]},
+ {f:"p12.jpg", scene:"睡蓮の浮かぶ水面。", world:"静かな水面に落ちる、小さな水の音。", feel:["集中したい","落ち着きたい"], noise:["空調"]},
+ {f:"p13.jpg", scene:"暗い色の朝焼けの港。", world:"低く寄せる波の音。", feel:["落ち着きたい"], noise:["空調","車"]},
+ {f:"p14.jpg", scene:"川にかかる吊り橋と、岸辺の家々。", world:"川の流れる音と、橋の向こうの風。", feel:["集中したい"], noise:["車"]},
+ {f:"p15.jpg", scene:"橋のある川で、洗濯をする人々。", world:"川の水音と、岸辺の人の声。", feel:["気分を変えたい"], noise:["話し声"]},
+ {f:"p16.jpg", scene:"渦巻く夜空と、眠る村。", world:"夜の風の音と、遠くの音。", feel:["気分を変えたい"], noise:["空調"]},
+ {f:"p17.jpg", scene:"ひまわりの咲く庭の階段。", world:"庭の虫の羽音と、風の音。", feel:["ほっとしたい"], noise:["紙をめくる音"]},
+ {f:"p18.jpg", scene:"紫の花が一面に咲く庭。", world:"花の間を抜ける風と、蜂の羽音。", feel:["ほっとしたい"], noise:["紙をめくる音"]},
+ {f:"p19.jpg", scene:"川の向こうに町が見える水辺。", world:"静かな水面と、遠くの町の音。", feel:["落ち着きたい"], noise:["車"]},
+ {f:"p20.jpg", scene:"柳の垂れる池と、小さな橋。", world:"池の水音と、鳥の声。", feel:["落ち着きたい"], noise:["空調"]},
+ {f:"p23.jpg", scene:"睡蓮の池にかかる太鼓橋。", world:"池に落ちる水の音。", feel:["集中したい"], noise:["空調"]},
+ {f:"p24.jpg", scene:"野に積まれた2つの干し草の山。", world:"乾いた草を渡る風の音。", feel:["集中したい"], noise:["紙をめくる音"]}
+];
+(function(){
+  var stage=document.getElementById("stage"), q=document.getElementById("q");
+  function rnd(i,s){var x=Math.sin(i*97.13+s*12.9898)*43758.5453;return x-Math.floor(x);}
+  var els=[];
+  function layout(){
+    var W=innerWidth,H=innerHeight,n=P.length;
+    var cw=Math.max(88,Math.min(124,W/10.5));
+    els.forEach(function(e,i){
+      var ring=i%2, k=Math.floor(i/2), cnt=Math.ceil(n/2);
+      var a=(k/cnt)*Math.PI*2+(ring?Math.PI/cnt:0)-Math.PI/2;
+      var rx=W*(ring?0.42:0.35), ry=H*(ring?0.41:0.33);
+      var x=W/2+rx*Math.cos(a)-cw/2, y=H/2+ry*Math.sin(a)-cw*0.35;
+      e.style.width=cw+"px"; e.style.left=x+"px"; e.style.top=y+"px";
+    });
+  }
+  P.forEach(function(p,i){
+    var b=document.createElement("button"); b.className="p";
+    b.style.setProperty("--d",(7+rnd(i,1)*6)+"s");
+    b.style.setProperty("--dx",(rnd(i,2)*24-12)+"px"); b.style.setProperty("--dy",(rnd(i,3)*24-12)+"px");
+    b.innerHTML='<img src="img/'+p.f+'" alt="">';
+    b.firstChild.onerror=function(){b.style.display="none";};
+    b.onclick=function(){open(p);}; stage.appendChild(b); els.push(b);
+  });
+  layout(); addEventListener("resize",layout);
+
+  function chips(id,list){
+    var box=document.getElementById(id);
+    list.forEach(function(t){var c=document.createElement("button");c.className="chip";c.textContent=t;c.onclick=function(){q.value=t;filter();};box.appendChild(c);});
+  }
+  chips("c-feel",FEELINGS); chips("c-noise",NOISES);
+
+  function hay(p){return [p.scene,p.world].concat(p.feel,p.noise).join(" ");}
+  function filter(){
+    var t=q.value.trim(), n=0;
+    P.forEach(function(p,i){
+      var on=!t||hay(p).indexOf(t)>=0;
+      els[i].classList.toggle("off",!on); els[i].classList.toggle("hit",!!t&&on); if(on)n++;
+    });
+    document.getElementById("count").textContent=t?(n?n+" 点が見つかりました":"見つかりませんでした"):"";
+  }
+  q.addEventListener("input",filter);
+
+  var panel=document.getElementById("panel"), pic=document.getElementById("pic");
+  var cur=null, ctx=null, buf={}, node=null;
+  function icons(on){document.getElementById("ic-play").style.display=on?"none":"";document.getElementById("ic-stop").style.display=on?"":"none";}
+  function stopAudio(){ if(node){try{node.stop();}catch(e){} node=null;} icons(false); }
+  function open(p){
+    stopAudio(); cur=p;
+    document.getElementById("m-img").src="img/"+p.f;
+    document.getElementById("m-name").textContent=p.name||"";
+    pic.classList.toggle("snd",!!p.sound);
+    panel.classList.add("on");
+  }
+  function close(){stopAudio();panel.classList.remove("on");}
+  pic.onclick=function(){
+    if(!cur||!cur.sound)return;
+    if(node){stopAudio();return;}
+    if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)(); ctx.resume();
+    var u=cur.sound;
+    (buf[u]?Promise.resolve(buf[u]):fetch(u).then(function(r){return r.arrayBuffer();}).then(function(a){return new Promise(function(y,n){ctx.decodeAudioData(a,y,n);});}).then(function(b){return buf[u]=b;}))
+    .then(function(b){ var s=ctx.createBufferSource(); s.buffer=b; s.loop=true; s.connect(ctx.destination); s.start(); node=s; icons(true); }).catch(function(){});
+  };
+  document.getElementById("m-close").onclick=close;
+  panel.onclick=function(e){if(e.target===panel)close();};
+  addEventListener("keydown",function(e){if(e.key==="Escape")close();});
+  var qs=new URLSearchParams(location.search);
+  if(qs.get("q")){q.value=qs.get("q");filter();}
+  if(qs.get("open")){P.forEach(function(p){if(p.f.replace(".jpg","")===qs.get("open"))open(p);});}
+})();
+</script>
+</body>
+</html>

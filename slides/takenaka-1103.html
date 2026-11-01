@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音を使った2つの提案 — Jumpei Kaneko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@400;500;700&family=Zen+Old+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/slide.css">
+<style>
+  .site-echo,.hint{display:none}
+  /* 全スライド共通：見出しは左上に固定、本文は同じ位置から始める */
+  .slide{justify-content:flex-start;padding:clamp(64px,10vh,96px) clamp(40px,6vw,104px) clamp(36px,6vh,64px)}
+  .slide.cover{justify-content:center}
+  .slide .s-title{margin-top:0}
+  .body{margin-top:clamp(24px,4.5vh,44px);max-width:960px}
+  .blk + .blk{margin-top:clamp(18px,3.2vh,30px)}
+  .blk h3{margin:0 0 6px;font-family:var(--font-display);font-weight:500;font-size:var(--fs-md);letter-spacing:.06em;color:var(--c-fg)}
+  .blk p{margin:0;font-size:var(--fs-base);line-height:1.95;color:var(--c-fg-soft)}
+  .spec--big th,.spec--big td{font-size:var(--fs-base);padding:10px 24px 10px 0}
+  .spec--big td:first-child{font-size:var(--fs-md)}
+  .frame{margin-top:clamp(16px,3vh,28px);width:100%;max-width:1320px;height:calc(100dvh - clamp(64px,10vh,96px) - clamp(36px,6vh,64px) - 90px);border:1px solid var(--c-line-strong);background:#fff}
+  .frame iframe{display:block;width:100%;height:100%;border:0}
+  .video{margin-top:clamp(16px,3vh,28px);width:min(100%, calc((100dvh - 220px) * 16 / 9));aspect-ratio:16/9;background:#000}
+  .poster{display:block;height:calc(100dvh - clamp(64px,10vh,96px) - clamp(36px,6vh,64px));max-height:760px;width:auto;margin-left:auto}
+  .two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:start}
+  .reveal{transition-duration:.6s}
+</style>
+</head>
+<body>
+
+<button class="fs-toggle" id="fsToggle" type="button">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+  <span id="fsLabel">全画面</span>
+</button>
+
+<main id="deck">
+
+<section class="slide cover" data-title="音を使った2つの提案">
+  <div class="slide-inner">
+    <div class="s-title s-title--name">音を使った2つの提案</div>
+    <p class="s-meta">提案者　金子淳平 ／ 2026年11月3日</p>
+  </div>
+</section>
+
+<section class="slide" data-title="提案">
+  <div class="slide-inner">
+    <div class="s-title">提案</div>
+    <div class="body">
+      <div class="blk"><h3>1. 絵画を聴く案</h3><p>今の研究を、会議室に展開する。物音に、絵画の世界としての意味を与える。</p></div>
+      <div class="blk"><h3>2. ポストクラシカル案</h3><p>実践している活動を、会議室に設置する。印象派の絵とドビュッシーの音楽を、オフィスの会議室に置く。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="1. 絵画を聴く案　今の取り組み">
+  <div class="slide-inner">
+    <div class="s-title">1. 絵画を聴く案　今の取り組み</div>
+    <div class="body">
+      <div class="blk"><h3>研究</h3><p>絵画の音を、ある程度の数、作れるようにする手法を考えている。<br>情報処理学会の論文に向けて進めている。</p></div>
+      <div class="blk"><h3>展開</h3><p>この研究を、会議室のような日常の部屋に展開したい。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="背景">
+  <div class="slide-inner">
+    <div class="s-title">背景</div>
+    <div class="body">
+      <div class="blk"><p style="font-size:var(--fs-md);color:var(--c-fg)">印象派は、郊外の自然を描いて都市に持ってくることで、<br>都市化した場所にいる人が自然を感じられるようにした。</p></div>
+      <div class="blk"><p style="font-size:var(--fs-md);color:var(--c-fg)">この役割を、会議室のような部屋の中で拡張したい。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="問題と提案">
+  <div class="slide-inner">
+    <div class="s-title">問題と提案</div>
+    <div class="body">
+      <div class="blk"><h3>問題</h3><p>物音（タイピング音など）が苦手。<br>これまで物音は、消す（耳栓、ノイズキャンセル）、被せる（マスキング）、置き換える（センサーで別の音に変える）で扱われてきた。<br>消すと周りの気配も消え、被せると部屋の音が増え、置き換えは一人の体験にとどまる。</p></div>
+      <div class="blk"><h3>実感</h3><p>物音に意味が付くと、楽になる。<br>これは私の実感としてあり、体系的にも整理したい。</p></div>
+      <div class="blk"><h3>提案</h3><p>物音に、絵画の世界としての意味を与える。<br>絵の世界の音を、物音と同じ質感で作って重ねる。<br>素材には、その部屋の生活音を使う。</p></div>
+      <div class="blk"><h3>確かめること</h3><p>音環境のちょうどよさが、どう変わるか。<br>意味を付けると楽になる、という実感が、どこまで言えるか。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="物音と絵の世界の音の対応">
+  <div class="slide-inner">
+    <div class="s-title">物音と絵の世界の音の対応</div>
+    <div class="body">
+      <table class="spec spec--big">
+        <thead><tr><th>物音</th><th>物音の性質</th><th>絵の世界の音</th></tr></thead>
+        <tbody>
+          <tr><td>タイピング音</td><td>細かく粒立つ</td><td>雨の音</td></tr>
+          <tr><td>車の通過音</td><td>ゆっくり寄せて、引く</td><td>波の音</td></tr>
+          <tr><td>空調の音</td><td>一定に続く</td><td>風の音</td></tr>
+          <tr><td>話し声</td><td>中くらいの高さのざわめき</td><td>川のせせらぎ</td></tr>
+          <tr><td>紙をめくる音</td><td>かすれる</td><td>木の葉の音</td></tr>
+          <tr><td>ドアの開閉</td><td>低く、一度だけ</td><td>遠くの雷</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="デモ">
+  <div class="slide-inner">
+    <div class="s-title">デモ</div>
+    <div class="frame"><iframe src="../takenaka-demo/index.html" title="デモ" allow="autoplay"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="デモ　タイピングで調べたとき">
+  <div class="slide-inner">
+    <div class="s-title">デモ　タイピングで調べたとき</div>
+    <div class="frame"><iframe src="../takenaka-demo/index.html?q=タイピング&open=rain" title="デモ" allow="autoplay"></iframe></div>
+  </div>
+</section>
+
+<section class="slide" data-title="構成">
+  <div class="slide-inner">
+    <div class="s-title">構成</div>
+    <div class="body">
+      <div class="blk"><p style="font-size:var(--fs-md);color:var(--c-fg)">モニターに絵を映し、横の2チャンネルのスピーカーから音を流す。</p></div>
+      <div class="blk"><p style="font-size:var(--fs-md);color:var(--c-fg)">iPadでサイトを開き、モニターにつなぐ。</p></div>
+      <div class="blk"><p style="font-size:var(--fs-md);color:var(--c-fg)">音は事前に作ったものを使う。マイクとリアルタイム変換は使わない。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="2. ポストクラシカル案　概要">
+  <div class="slide-inner">
+    <div class="s-title">2. ポストクラシカル案　概要</div>
+    <div class="body" style="max-width:1040px">
+      <div class="blk"><h3>概要</h3><p>印象派の絵と音楽を、オフィスの会議室に設置する。<br>モニターに絵をモチーフにしたアニメーションが映る。<br>その絵に重ねたドビュッシーの楽曲が、多チャンネルの音響で、部屋に広がる。</p></div>
+      <div class="blk"><h3>背景</h3><p>印象派絵画は、19世紀の急速な都市化のなかで、密閉された空間から、「絵画」というメディアを通じて自然の光や大気の揺らぎを感じようとした。<br>現代の急速な社会の変化は、19世紀と重ね合わせられる部分が多いと考える。急速な「最適化」が進むこの時代に、絵画やクラシック音楽をメディウムとして、何を伝えられるだろうか。<br>かつて印象派が提示したような、急速な流れに対する「隙間」を、堀ビルの中に作れないだろうか。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="実際の活動">
+  <div class="slide-inner">
+    <div class="two">
+      <div>
+        <div class="s-title">実際の活動</div>
+        <div class="body">
+          <div class="blk"><h3>コンセプト</h3><p>ドビュッシーのピアノ曲を、ヴァイオリン、電子音響、環境音で編曲し、<br>曲ごとに、印象派の絵を1枚重ねる。</p></div>
+          <div class="blk"><h3>実践イベント「Post-Classical Debussy」</h3><p>2026年11月14日（土）　美学校<br>2026年11月28日（土）　100BANCH<br>SYIA（ヴァイオリン）／金子淳平（電子音響・企画）<br>Marcy MIWA（映像）／吉村勇作（脳波）</p></div>
+          <div class="blk"><h3>展開の射程</h3><p>商業施設、歴史的建築、寺社などの日常の場所で体験できるものにしたい。<br>オフィスの会議室で実証するのは面白いと考えた。</p></div>
+        </div>
+      </div>
+      <img class="poster" src="../images/poster-postclassical.jpg" alt="Post-Classical Debussy のチラシ" style="margin-top:-24px">
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="演奏の風景">
+  <div class="slide-inner">
+    <div class="s-title">演奏の風景</div>
+    <div class="video"><iframe src="https://drive.google.com/file/d/1Ily_ibS749cwfTOpY7HqEgIIP5R4FPv_/preview" allow="autoplay; fullscreen" allowfullscreen title="演奏の動画" style="width:100%;height:100%;border:0;display:block"></iframe></div>
+  </div>
+</section>
+
+</main>
+
+<div class="posi" id="posi">1 / 12</div>
+
+<script src="../assets/slide.js"></script>
+</body>
+</html>
